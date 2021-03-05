@@ -2,16 +2,35 @@
 #this playbook installs Docker
 
 - hosts: DockerNodes
+  become: true
   tasks:
     - name: Install containerd.io 
       apt:
         deb: https://download.docker.com/linux/ubuntu/dists/groovy/pool/stable/arm64/containerd.io_1.4.3-1_arm64.deb
-      become: yes
+      tags:
+        - containerd
+        - docker
+
     - name: Install docker-ce-cli
       apt:
         deb: https://download.docker.com/linux/ubuntu/dists/groovy/pool/stable/arm64/docker-ce-cli_20.10.0~3-0~ubuntu-groovy_arm64.deb
-      become: yes
+      tags:
+        - docker-ce-cli
+        - docker
+
+
     - name: Install docker-ce
       apt:
         deb: https://download.docker.com/linux/ubuntu/dists/groovy/pool/stable/arm64/docker-ce_20.10.0~3-0~ubuntu-groovy_arm64.deb
-      become: yes
+      tags:
+        - docker-ce
+        - docker
+
+    - name: Add ubuntu user to the docker group
+      user:
+        name: ubuntu
+        groups: docker
+        append: yes
+      tags:
+        - docker-user
+        - docker
