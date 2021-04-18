@@ -37,12 +37,11 @@ swarm-infra
 swarm-manager
 swarm-node1
 swarm-node2
-```
 
 [DockerWorkers]
 swarm-node1
 swarm-node2
-
+```
 
 ### Run ansible playbook to install Docker
 ``` bash
