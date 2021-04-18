@@ -1,5 +1,4 @@
 - hosts: DockerNodes
-  become: true
   tasks:
     - name: Initialize Swarm Manager
       shell: docker swarm init --advertise-addr={{ ansible_default_ipv4.address }} | grep "docker swarm join --token"
@@ -8,9 +7,8 @@
       tags:
         - docker-swarm
         - docker
-    - debug: msg="{{ hostvars }}"
     - name: Join Worker Nodes To Docker Swarm
-      shell: "{{ docker_swarm_join.stdout }}"
+      shell: "{{ hostvars['swarm-manager']['docker_swarm_join']['stdout'] }}"
       when: "inventory_hostname in groups['DockerWorkers']"
       tags:
         - docker-swarm

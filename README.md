@@ -44,7 +44,13 @@ swarm-node1
 swarm-node2
 
 
-### Run ansible playbook to create swarm
+### Run ansible playbook to install Docker
+``` bash
+ansible-playbook install_docker.yml
+```
+
+### Run the ansible playbook to initialize a Docker Swarm
 ``` bash
 ansible-playbook create_docker_swarm.yml
 ```
+
