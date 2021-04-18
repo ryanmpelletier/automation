@@ -1,0 +1,57 @@
+---
+# Installs Docker on Docker nodes.
+# Initializes a Docker Swarm
+# Joins the Docker Nodes To The Swarm
+
+- hosts: DockerNodes
+  become: true
+  tasks:
+    - name: Install containerd.io 
+      apt:
+        deb: https://download.docker.com/linux/ubuntu/dists/groovy/pool/stable/arm64/containerd.io_1.4.3-1_arm64.deb
+      tags:
+        - containerd
+        - docker
+
+    - name: Install docker-ce-cli
+      apt:
+        deb: https://download.docker.com/linux/ubuntu/dists/groovy/pool/stable/arm64/docker-ce-cli_20.10.0~3-0~ubuntu-groovy_arm64.deb
+      tags:
+        - docker-ce-cli
+        - docker
+
+
+    - name: Install docker-ce
+      apt:
+        deb: https://download.docker.com/linux/ubuntu/dists/groovy/pool/stable/arm64/docker-ce_20.10.0~3-0~ubuntu-groovy_arm64.deb
+      tags:
+        - docker-ce
+        - docker
+
+    - name: Add ubuntu user to the docker group
+      user:
+        name: ubuntu
+        groups: docker
+        append: yes
+      tags:
+        - docker-user
+        - docker
+
+- hosts: DockerNodes
+  become: true
+  tasks: 
+    - name: Initialize Swarm Manager
+      shell: docker swarm init --advertise-addr={{ ansible_default_ipv4.address }} | grep "docker swarm join --token"
+      register: docker_swarm_join
+      tags:
+        - docker-swarm
+        - docker
+      with_inventory_hostnames:
+        - swarm-manager
+    - name: Join Worker Nodes To Docker Swarm
+      shell: "{{ docker_swarm_join.stdout }}"
+      with_inventory_hostnames:
+        - DockerWorkers
+      tags:
+        - docker-swarm
+        - docker
