@@ -1,4 +1,6 @@
-## An automation project to help manage my Raspberry Pi Docker Cluster on Ubuntu 20.10 (Groovy Gorilla). The Swarm will have 3 nodes (1 of which also acts as the swarm manager), and one Swarm Infrastructure node will will be a load balancer and logging server.
+## About
+
+An automation project to help manage my Raspberry Pi Docker Cluster on Ubuntu 20.10 (Groovy Gorilla). The Swarm will have 3 nodes (1 of which also acts as the swarm manager), and one Swarm Infrastructure node will will be a load balancer and logging server.
 
 ### Install ansible
 ``` bash
