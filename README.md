@@ -9,7 +9,18 @@ apt get install ansible
 192.168.0.22 swarm-node2
 192.168.0.86 swarm-infra
 
-### Add [DockerNodes] group to Ansible hosts in /etc/ansible/hosts
+### Create SSH KeyPair
+ssh-keygen
+
+### Copy Public Key To Remote Servers
+ssh-copy-id -i ~/.ssh/id_rsa.pub ubuntu@swarm-manager
+ssh-copy-id -i ~/.ssh/id_rsa.pub ubuntu@swarm-node1
+ssh-copy-id -i ~/.ssh/id_rsa.pub ubuntu@swarm-node2
+ssh-copy-id -i ~/.ssh/id_rsa.pub ubuntu@swarm-infra
+
+### Add swarm-infra and [DockerNodes] group to Ansible hosts in /etc/ansible/hosts
+
+swarm-infra
 
 [DockerNodes]
 swarm-manager
