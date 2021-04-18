@@ -18,12 +18,16 @@ ssh-copy-id -i ~/.ssh/id_rsa.pub ubuntu@swarm-node1
 ssh-copy-id -i ~/.ssh/id_rsa.pub ubuntu@swarm-node2
 ssh-copy-id -i ~/.ssh/id_rsa.pub ubuntu@swarm-infra
 
-### Add swarm-infra and [DockerNodes] group to Ansible hosts in /etc/ansible/hosts
+### Add swarm-infra, [DockerNodes], and [DockerWorkers] to Ansible hosts in /etc/ansible/hosts
 
 swarm-infra
 
 [DockerNodes]
 swarm-manager
+swarm-node1
+swarm-node2
+
+[DockerWorkers]
 swarm-node1
 swarm-node2
 

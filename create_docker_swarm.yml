@@ -1,5 +1,7 @@
 ---
-#this playbook installs Docker
+# Installs Docker on Docker nodes.
+# Initializes a Docker Swarm
+# Joins the Docker Nodes To The Swarm
 
 - hosts: DockerNodes
   become: true
@@ -33,4 +35,21 @@
         append: yes
       tags:
         - docker-user
+        - docker
+
+- hosts: DockerNodes
+  become: true
+  tasks: 
+    - name: Initialize Swarm Manager
+      shell: docker swarm init --advertise-addr={{ ansible_default_ipv4.address }} | grep "docker swarm join --token"
+      register: docker_swarm_join
+      when: inventory_hostname 
+      tags:
+        - docker-swarm
+        - docker
+    - name: Join Worker Nodes To Docker Swarm
+      shell: "{{ docker_swarm_join.stdout }}"
+      when: inventory_hostname in groups['DockerWorkers']
+      tags:
+        - docker-swarm
         - docker
