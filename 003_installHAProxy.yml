@@ -1,0 +1,9 @@
+---
+- hosts: haproxy
+  become: yes
+  tasks:
+    - name: Install HAProxy on haproxy pi
+      apt:
+        name: haproxy
+        update_cache: yes
+
