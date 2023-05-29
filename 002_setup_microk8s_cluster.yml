@@ -1,0 +1,12 @@
+---
+- name: Get join token from main
+  hosts: all
+  tasks:
+    - name: Run shell command and register output
+      shell: microk8s add-node --token-ttl 300 | grep "microk8s join" | grep worker
+      register: join_command
+      when: inventory_hostname in groups['cluster_main']
+
+    - name: Join workers to cluster
+      shell: "{{ hostvars['ubuntu-rpi4-1']['join_command']['stdout'] }}"
+      when: inventory_hostname in groups['cluster_workers']

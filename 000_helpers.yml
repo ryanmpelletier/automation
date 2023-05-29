@@ -1,0 +1,21 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Update apt cache and make sure Vim is installed
+      apt:
+        name: vim
+        update_cache: yes
+    - name: Create bash_aliases
+      file:
+        path: /home/ubuntu/.bash_aliases
+        state: "touch"
+        owner: ubuntu
+        group: ubuntu
+        mode: u=rw,g=r,o=r
+    - name: Set up vi as vim actually
+      lineinfile:
+        path: /home/ubuntu/.bash_aliases
+        line: "alias vi='vim'"
+        owner: ubuntu
+        state: present
