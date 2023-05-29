@@ -1,0 +1,6 @@
+---
+- hosts: cluster_workers
+  become: yes
+  tasks:
+    - name: Leave microk8s cluster
+      shell: microk8s leave

@@ -1,0 +1,35 @@
+---
+- hosts: cluster
+  become: yes
+  tasks:
+    - name: Copy file with owner and permissions
+      copy:
+        src: files/cmdline.txt
+        dest: /boot/firmware/cmdline.txt
+        owner: root
+        group: root
+        mode: '755'
+      register: updated_cmdline
+    - name: Reboot
+      reboot:
+        reboot_timeout: 3600
+      when: updated_cmdline.changed
+    - name: Install extra packages
+      apt:
+        name: linux-modules-extra-raspi
+        state: present
+    - name: Install microk8s
+      community.general.snap:
+        name: microk8s
+        classic: true
+        channel: "1.25"
+        state: present
+    - name: Add ubuntu user to microk8s group
+      user:
+        name: ubuntu
+        groups: microk8s
+        append: yes
+      register: add_ubuntu_to_microk8s
+    - name: Notify of group change
+      shell: newgrp microk8s
+      when: add_ubuntu_to_microk8s.changed

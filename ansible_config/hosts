@@ -1,0 +1,22 @@
+all:
+  hosts:
+    ubuntu-rpi4-1:
+    ubuntu-rpi4-2:
+    ubuntu-rpi4-3:
+  children:
+    cluster_main:
+      hosts:
+        ubuntu-rpi4-1
+    cluster_workers:
+      hosts:
+        ubuntu-rpi4-2:
+        ubuntu-rpi4-3:
+    cluster:
+      hosts:
+        ubuntu-rpi4-1:
+        ubuntu-rpi4-2:
+        ubuntu-rpi4-3:
+      vars:
+        ansible_user: ubuntu
+        ansible_become_method: sudo
+        ansible_ssh_private_key_file: ~/.ssh/id_rsa

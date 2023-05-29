@@ -1,0 +1,9 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Uninstall microk8s
+      community.general.snap:
+         name: microk8s
+         state: absent
+
